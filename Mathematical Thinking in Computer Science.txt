@@ -1,0 +1,10 @@
+
+Theorem:
+A chess board with 8 * * without two opposite corners cannot be tiled by 1*2 domions.
+
+Proof:
+black and white cells , 4h/4b
+oppositr corners are black
+30 black and 32 white
+A domions: two diffrent colors
+atleast two white remain
