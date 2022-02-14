@@ -1,0 +1,101 @@
+public class Validate {
+
+	public static void main(String[] args) {
+
+		List<String> testSuite = new ArrayList<String>();
+		testSuite.add("The quick brown fox... said \"hello Mr lazy dog\".");
+		testSuite.add("The quick brown fox said hello Mr lazy dog.");
+		testSuite.add("One lazy dog is too few, 13 is too many.");
+		testSuite.add("One lazy dog is too few, thirteen is too many.");
+		testSuite.add("The quick brown fox said \"hello Mr. lazy dog\".");
+		testSuite.add("the quick brown fox said \"hello Mr lazy dog\".");
+		testSuite.add("\"The quick brown fox said \"hello Mr lazy dog.\"");
+		testSuite.add("One lazy dog is too few, 12 is too many.");
+
+		for (String newString : testSuite) {
+
+			ValidateSentence validateSentence = new ValidateSentence(newString);
+			List al = validateSentence.isValidSentence();
+
+			if (al.size() > 0) {
+				System.out
+						.println("Invalid Sentence due to below exceptions: [ " + validateSentence.finalString + " ]");
+				System.out.println(al);
+			} else {
+				System.out.println("Valid Sentence: [ " + validateSentence.finalString + " ]");
+
+			}
+		}
+
+	}
+
+	private String finalString;
+
+	public ValidateSentence(String test) {
+		finalString = test;
+	}
+
+	private boolean startsWithCapital() {
+		// Check for CAPS letter in start of String using regular expression
+		return finalString.matches("(^[A-Z].*)");
+	}
+
+	private boolean endsWithPeriod() {
+		// Check for String ends with a period character “." using regular expression
+		return finalString.matches("(.*\\.$)");
+	}
+
+	private boolean validateForEvenQuotes() {
+		// Check for even number of quotes double quotes
+		int count = 0;
+		for (int i = 0; i < finalString.length(); i++) {
+			if (finalString.charAt(i) == '"')
+				count += 1;
+		}
+		if ((count % 2) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean validateForPeriodInSentence() {
+		// String validation to see for periods in last character
+		String resultString = new String(finalString.substring(0, (finalString.length() - 1)));
+		if (resultString.contains(".")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private boolean validateNumbersTillTwelve() {
+		// check for the numbers 1-12 using regular expression
+		if (finalString.matches(".*(?: [0-9] | 10 | 11 | 12 ).*")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public List<String> isValidSentence() {
+		List<String> errorMessages = new ArrayList<String>();
+		if (this.startsWithCapital() == false) {
+			errorMessages.add("This sentence does not start with capital letter");
+		}
+		if (this.endsWithPeriod() == false) {
+			errorMessages.add("This sentence does not end with a period");
+		}
+		if (this.validateForEvenQuotes() == false) {
+			errorMessages.add("This sentence contains an odd number of quotes");
+		}
+		if (this.validateForPeriodInSentence() == false) {
+			errorMessages.add("This sentence contains a period between sentence");
+		}
+		if (this.validateNumbersTillTwelve() == false) {
+			errorMessages.add("This sentence contains numeric values between 1 and 12");
+		}
+		return errorMessages;
+	}
+
+}
